@@ -16,12 +16,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'File size exceeds maximum allowed 5MB limit' }, { status: 400 });
     }
 
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const isVercel = process.env.VERCEL === '1' || !!process.env.VERCEL;
+
+    if (isVercel) {
+      // Serverless environments do not have persistent writable public directories
+      const mimeType = file.type || 'image/jpeg';
+      const base64Url = `data:${mimeType};base64,${buffer.toString('base64')}`;
+      return NextResponse.json({
+        url: base64Url,
+        filename: file.name,
+        message: 'Image uploaded successfully'
+      });
+    }
+
     const uploadDir = path.join(process.cwd(), 'public', 'uploads');
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
     const ext = path.extname(file.name) || '.jpg';
     const cleanName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}${ext}`;
     const filePath = path.join(uploadDir, cleanName);

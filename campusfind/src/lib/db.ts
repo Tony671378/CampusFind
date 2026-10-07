@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
+import os from 'os';
 import { seedDatabase } from './seed';
 
 let dbInstance: Database.Database | null = null;
@@ -10,16 +11,25 @@ export function getDb(): Database.Database {
     return dbInstance;
   }
 
-  const dataDir = path.join(process.cwd(), 'data');
+  const isVercel = process.env.VERCEL === '1' || !!process.env.VERCEL;
+  const dataDir = isVercel ? os.tmpdir() : path.join(process.cwd(), 'data');
   if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+    } catch {
+      // directory exists or read-only
+    }
   }
 
   const dbPath = path.join(dataDir, 'campusfind.db');
   const db = new Database(dbPath);
 
   // Enable WAL mode for high performance concurrency
-  db.pragma('journal_mode = WAL');
+  try {
+    db.pragma('journal_mode = WAL');
+  } catch {
+    // pragma fallback
+  }
   db.pragma('foreign_keys = ON');
 
   // Create tables if not existing
