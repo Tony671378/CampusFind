@@ -1,0 +1,13 @@
+{
+  "name": "campusfind-root",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CampusFind — College Lost & Found Root Workspace",
+  "scripts": {
+    "dev": "npm --prefix campusfind run dev",
+    "build": "npm --prefix campusfind run build",
+    "start": "npm --prefix campusfind run start",
+    "lint": "npm --prefix campusfind run lint",
+    "seed": "npm --prefix campusfind run seed"
+  }
+}
