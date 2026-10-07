@@ -22,6 +22,9 @@ On university campuses, personal items like student IDs, calculators, earbuds, l
 
 ## 🚀 Live Demo & Quick Start
 
+- **🌐 Live Production URL:** [https://campusfind-ten.vercel.app](https://campusfind-ten.vercel.app)
+- **📂 GitHub Repository:** [https://github.com/Tony671378/CampusFind](https://github.com/Tony671378/CampusFind)
+
 ### Prerequisites
 - **Node.js** v18+ (tested on Node v20 & v24)
 - **npm** v9+
@@ -29,10 +32,9 @@ On university campuses, personal items like student IDs, calculators, earbuds, l
 ### 1. Installation
 Clone the repository and install dependencies:
 ```bash
-git clone <repo-url>
-cd "CampusFind&Lost"
-cd campusfind
-npm install
+git clone https://github.com/Tony671378/CampusFind.git
+cd CampusFind
+npm run dev
 ```
 
 ### 2. Run the Development Server
